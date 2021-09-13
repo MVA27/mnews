@@ -14,6 +14,13 @@ import java.util.Locale;
 
 public class ThreadDataLoader extends Thread {
 
+    String accessKey;
+
+    public ThreadDataLoader(String accessKey){
+        this.accessKey = accessKey;
+    }
+
+
     //connect to the server and load data into buffer
     public void loadData() {
 
@@ -26,7 +33,7 @@ public class ThreadDataLoader extends Thread {
             String sources = "sources=bostonherald,irishtimes,nesn,wtvq,globaltoronto,pedestrian,europeanvoice,whittierdailynews,euroweeklynews,ocregister,en,ESPN,Mail,Post,globalwinnipeg,Sportskeeda,dnaindia,sg,tribune,dailynews,dailybreeze,CNN";
 
             //Connect to server
-            String rawURL = "http://api.mediastack.com/v1/news?access_key=cb0cfbf6f3be69750c9654574feec5fb&"+date+"&"+limit+"&"+languages+"&"+countries+"&"+sources;
+            String rawURL = "http://api.mediastack.com/v1/news?access_key="+accessKey+"&"+date+"&"+limit+"&"+languages+"&"+countries+"&"+sources;
             URL url = new URL(rawURL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");

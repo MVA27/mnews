@@ -24,18 +24,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //From Administrator Package
+        //From Administrator Package (Check if Admin has allowed Access)
         new ThreadParseHTML().start();
         while(ThreadParseHTML.holder == null);
 
-        if(ThreadParseHTML.holder.getFlag() == 0){
+        if(ThreadParseHTML.holder.getApiAccess() == 0){ //If Admin dose'nt allow access, Show Error Page
             Intent intent = new Intent(MainActivity.this,ActivityError.class);
             startActivity(intent);
         }
-        else {
-            //start the thread and pass context to show toast
+        else {  //If Admin allows access, Get Api access key from AdminFlags and make API call
+
             if (MainActivity.data == null) {
-                new ThreadDataLoader().start();
+                new ThreadDataLoader(ThreadParseHTML.holder.getKey()).start();
             }
 
             //If data is not loaded, loop until it does

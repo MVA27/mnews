@@ -18,7 +18,7 @@ public class ThreadParseHTML extends Thread{
 
         try{
             //Establish Connection
-            String rawURL = "https://projectnandriod.blogspot.com/2021/09/test.html";
+            String rawURL = "https://projectnandriod.blogspot.com/2021/09/adminflags.html";
             URL url = new URL(rawURL);
             HttpsURLConnection con =  (HttpsURLConnection) url.openConnection();
 
@@ -37,7 +37,7 @@ public class ThreadParseHTML extends Thread{
 
             //Extract JSON data from HTML
             Document doc = Jsoup.parse(new String(html));
-            Element element = doc.getElementById("adminID");
+            Element element = doc.getElementById("adminFlags");
             String json = element.text();
 
             //Convert it into equivalent Holder object
