@@ -1,6 +1,7 @@
 package com.android.mnews.threads;
 
 import com.android.mnews.MainActivity;
+import com.android.mnews.mediastack.Data;
 import com.android.mnews.mediastack.Holder;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -9,8 +10,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TreeSet;
 
 public class ThreadDataLoader extends Thread {
 

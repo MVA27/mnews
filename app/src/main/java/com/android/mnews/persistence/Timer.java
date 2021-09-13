@@ -9,15 +9,12 @@ import java.util.Locale;
 
 public class Timer {
 
-    private Context context;
     private SharedPreferences sharedPreferences;
     private final String TIMER_FILE = "TIMER_FILE";
     private final String HOURS = "HOURS";
     private final String MINUTES = "MINUTES";
 
-
     public Timer(Context context){
-        this.context = context;
         sharedPreferences = context.getSharedPreferences(TIMER_FILE,Context.MODE_PRIVATE);
     }
 
@@ -42,7 +39,6 @@ public class Timer {
      *  Else : load the saved data based of the differenceInMinutes value
      */
     public int getDuration(){
-
         //Get The time user entered last time
         String[] s = getPreviouslyEnteredTime();
         String oldHrs = s[0];
@@ -61,7 +57,7 @@ public class Timer {
 
         if(Math.abs(differenceInHours) == 0){
             //If the hour same, calculate after how many minutes he has entered
-            differenceInMinutes =  Integer.parseInt(oldMin) - Integer.parseInt(currentMin);
+            differenceInMinutes =  Math.abs(Integer.parseInt(oldMin) - Integer.parseInt(currentMin));
         }
 
         //Save Current Time
