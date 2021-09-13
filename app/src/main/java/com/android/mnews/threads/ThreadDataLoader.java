@@ -23,7 +23,7 @@ public class ThreadDataLoader extends Thread {
             String languages = "languages=en,-ar,-ru";
             String limit = "limit=100";
             String countries = "countries=-ar,-au,-at,-be,-br,-bg,-cn,-co,-cz,-eg,-fr,-de,-gr,-hk,-hu,-id,-ie,-il,-it,-jp,-lv,-lt,-my,-mx,-ma,-nl,-nz,-ng,-no,-ph,-pl,-pt,-ro,-sa,-rs,-sg,-sk,-si,-za,-kr,-se,-ch,-tw,-th,-tr,-ae,-ua,-ve";
-            String sources = "sources=bostonherald,irishtimes,nesn,wtvq,globaltoronto,pedestrian,europeanvoice,whittierdailynews,euroweeklynews,ocregister,en,ESPN,Mail,Post,globalwinnipeg,dvidshub,Sportskeeda,dnaindia,sg,tribune,dailynews,dailybreeze,CNN";
+            String sources = "sources=bostonherald,irishtimes,nesn,wtvq,globaltoronto,pedestrian,europeanvoice,whittierdailynews,euroweeklynews,ocregister,en,ESPN,Mail,Post,globalwinnipeg,Sportskeeda,dnaindia,sg,tribune,dailynews,dailybreeze,CNN";
 
             //Connect to server
             String rawURL = "http://api.mediastack.com/v1/news?access_key=cb0cfbf6f3be69750c9654574feec5fb&"+date+"&"+limit+"&"+languages+"&"+countries+"&"+sources;

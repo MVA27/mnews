@@ -16,7 +16,7 @@ public class Timer {
     private final String MINUTES = "MINUTES";
 
 
-    Timer(Context context){
+    public Timer(Context context){
         this.context = context;
         sharedPreferences = context.getSharedPreferences(TIMER_FILE,Context.MODE_PRIVATE);
     }
@@ -37,24 +37,31 @@ public class Timer {
         return new String[]{hrs,min};
     }
 
+    /**
+     *  If this method returns -1 : Fetch data from the API server
+     *  Else : load the saved data based of the differenceInMinutes value
+     */
     public int getDuration(){
 
         //Get The time user entered last time
         String[] s = getPreviouslyEnteredTime();
         String oldHrs = s[0];
         String oldMin = s[1];
+        if(oldHrs.equals("0") && oldMin.equals("0")){ //Means the application is running first time
+            return -1;
+        }
 
         //Calculate Difference
         String currentHrs = new SimpleDateFormat("HH",Locale.getDefault()).format(new Date());
         String currentMin = new SimpleDateFormat("mm",Locale.getDefault()).format(new Date());
 
+        //Calculate if the user is entering again for same hour
         int differenceInHours = Integer.parseInt(oldHrs) - Integer.parseInt(currentHrs);
-        int differenceInMinutes = 0;
+        int differenceInMinutes = -1;
+
         if(Math.abs(differenceInHours) == 0){
+            //If the hour same, calculate after how many minutes he has entered
             differenceInMinutes =  Integer.parseInt(oldMin) - Integer.parseInt(currentMin);
-        }
-        else{
-            differenceInMinutes = -1;
         }
 
         //Save Current Time

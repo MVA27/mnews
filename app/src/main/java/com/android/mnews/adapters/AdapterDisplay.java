@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.android.mnews.ActivityWeb;
 import com.android.mnews.R;
+import com.android.mnews.persistence.Timer;
 import com.bumptech.glide.Glide;
 import static com.android.mnews.MainActivity.data;
 
@@ -60,6 +61,14 @@ public class AdapterDisplay extends BaseAdapter {
             //Title of Post
             TextView titleTextView = eachRow.findViewById(R.id.activity_display_cardview_title_ID);
             titleTextView.setText(data.get(position).getTitle());
+            titleTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Timer timer = new Timer(context);
+                    int min = timer.getDuration();
+                    Toast.makeText(context, "mins = "+min, Toast.LENGTH_SHORT).show();
+                }
+            });
 
             //source button
             TextView author = eachRow.findViewById(R.id.activity_display_cardview_author_ID);

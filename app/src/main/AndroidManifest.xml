@@ -12,13 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ActivityWeb"></activity>
+        <activity android:name=".ActivityError"></activity>
+        <activity android:name=".ActivityWeb" />
         <activity android:name=".ActivityDisplay" />
-        <activity android:name=".MainActivity"
-            android:theme="@style/splashScreenTheme"
-            >
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/splashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
