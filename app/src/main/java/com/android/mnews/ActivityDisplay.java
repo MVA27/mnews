@@ -3,6 +3,7 @@ package com.android.mnews;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.android.mnews.adapters.AdapterDisplay;
@@ -15,6 +16,8 @@ public class ActivityDisplay extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
+
+        Toast.makeText(this, ""+getIntent().getStringExtra("test"), Toast.LENGTH_SHORT).show();
 
         try {
             activityDisplayLView = findViewById(R.id.activity_display_list_view_ID);

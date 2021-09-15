@@ -10,11 +10,11 @@ import java.util.Locale;
 public class Timer {
 
     private SharedPreferences sharedPreferences;
-    private final String TIMER_FILE = "TIMER_FILE";
     private final String HOURS = "HOURS";
     private final String MINUTES = "MINUTES";
 
     public Timer(Context context){
+        String TIMER_FILE = "TIMER_FILE";
         sharedPreferences = context.getSharedPreferences(TIMER_FILE,Context.MODE_PRIVATE);
     }
 
@@ -35,17 +35,16 @@ public class Timer {
     }
 
     /**
+     *  NOTE : This method should be called only once
      *  If this method returns -1 : Fetch data from the API server
      *  Else : load the saved data based of the differenceInMinutes value
      */
     public int getDuration(){
+		
         //Get The time user entered last time
         String[] s = getPreviouslyEnteredTime();
-        String oldHrs = s[0];
-        String oldMin = s[1];
-        if(oldHrs.equals("0") && oldMin.equals("0")){ //Means the application is running first time
-            return -1;
-        }
+        String oldHrs = s[0];	//If app opens for the first time getPreviouslyEnteredTime() returns "0"
+        String oldMin = s[1];	//If app opens for the first time getPreviouslyEnteredTime() returns "0"
 
         //Calculate Difference
         String currentHrs = new SimpleDateFormat("HH",Locale.getDefault()).format(new Date());

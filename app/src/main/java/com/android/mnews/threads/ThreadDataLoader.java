@@ -1,8 +1,9 @@
 package com.android.mnews.threads;
 
+import android.content.Context;
 import com.android.mnews.MainActivity;
-import com.android.mnews.mediastack.Data;
 import com.android.mnews.mediastack.Holder;
+import com.android.mnews.persistence.PreviousData;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -10,24 +11,25 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TreeSet;
 
 public class ThreadDataLoader extends Thread {
 
     String accessKey;
+    Context context;
 
-    public ThreadDataLoader(String accessKey){
+    //Key is taken from blogger website from admin thread, stored in Holder object and passed to this Thread
+    //Context is required to persist JSON data in sharedpreferences
+    public ThreadDataLoader(String accessKey,Context context){
         this.accessKey = accessKey;
+        this.context = context;
     }
-
 
     //connect to the server and load data into buffer
     public void loadData() {
 
-        String output = "";
+        String json = "";
         try {
             String date = "date="+new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
             String languages = "languages=en,-ar,-ru";
@@ -46,7 +48,7 @@ public class ThreadDataLoader extends Thread {
             InputStream is = con.getInputStream();
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
-            output = br.readLine();
+            json = br.readLine();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -54,12 +56,17 @@ public class ThreadDataLoader extends Thread {
 
         //Convert Json to Holder Object
         Gson gson = new Gson();
-        MainActivity.holder = gson.fromJson(output, Holder.class);
+        MainActivity.holder = gson.fromJson(json, Holder.class);
+
+        //Save the JSON data into permanent file
+        PreviousData previousData = new PreviousData(context);
+        previousData.saveData(json);
     }
 
     @Override
     public void run() {
         loadData();
+
         //Data loaded into list
         MainActivity.data = MainActivity.holder.getData();
     }
