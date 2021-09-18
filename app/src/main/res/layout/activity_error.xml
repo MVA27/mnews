@@ -31,14 +31,13 @@
         android:gravity="center_horizontal"
         android:textStyle="italic"
         android:fontFamily="sans-serif-condensed"
-        android:text="The administrator has decided to temporarily stop the service. Please come back after sometime."
+        android:text="The administrator has decided to temporarily stop the service. Please come back after sometime"
          />
 
     <Button
         android:id="@+id/activity_error_button_exit_ID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:text="EXIT"

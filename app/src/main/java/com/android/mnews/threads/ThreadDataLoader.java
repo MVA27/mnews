@@ -1,6 +1,9 @@
 package com.android.mnews.threads;
 
 import android.content.Context;
+import android.content.Intent;
+
+import com.android.mnews.ActivityDisplay;
 import com.android.mnews.MainActivity;
 import com.android.mnews.mediastack.Holder;
 import com.android.mnews.persistence.PreviousData;
@@ -63,11 +66,18 @@ public class ThreadDataLoader extends Thread {
         previousData.saveData(json);
     }
 
+    public void gotoActivityDisplay(){
+        Intent intent = new Intent(context, ActivityDisplay.class);
+        intent.putExtra("test"," loading new data");
+        context.startActivity(intent);
+    }
+
     @Override
     public void run() {
         loadData();
 
         //Data loaded into list
         MainActivity.data = MainActivity.holder.getData();
+        gotoActivityDisplay();
     }
 }

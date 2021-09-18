@@ -49,7 +49,5 @@ public class Pagination {
     public String toString() {
         return "Pagination{" + "limit=" + limit + ", offset=" + offset + ", count=" + count + ", total=" + total + '}';
     }
-
-
 }
 
