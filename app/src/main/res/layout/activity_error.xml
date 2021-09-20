@@ -20,7 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/activity_error_imageview_logo_ID"
-        android:layout_above="@id/activity_error_button_exit_ID"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="5dp"
@@ -35,6 +34,19 @@
          />
 
     <Button
+        android:id="@+id/activity_error_button_restart_ID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/activity_error_button_exit_ID"
+        android:layout_margin="20dp"
+        android:text="RESTART"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:background="@drawable/background_of_exit_button"
+        />
+
+    <Button
+
         android:id="@+id/activity_error_button_exit_ID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,6 +56,7 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         android:background="@drawable/background_of_exit_button"
+
         />
 
 </RelativeLayout>

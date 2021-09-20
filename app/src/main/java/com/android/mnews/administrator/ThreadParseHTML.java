@@ -2,17 +2,26 @@ package com.android.mnews.administrator;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.android.mnews.ActivityDisplay;
 import com.android.mnews.ActivityError;
 import com.android.mnews.MainActivity;
+import com.android.mnews.constants.Errors;
+import com.android.mnews.mediastack.Data;
 import com.android.mnews.persistence.PreviousData;
 import com.android.mnews.persistence.Timer;
 import com.android.mnews.threads.ThreadDataLoader;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
+
 import javax.net.ssl.HttpsURLConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.*;
@@ -58,13 +67,22 @@ public class ThreadParseHTML extends Thread{
             Gson gson = new Gson();
             holder = gson.fromJson(json,Holder.class);
         }
-        catch(Exception e){}
-
+        catch(IOException e){
+            Intent intent = new Intent(context, ActivityError.class);
+            intent.putExtra(Errors.ERROR_KEY,Errors.NO_INTERNET_CONNECTION);
+            context.startActivity(intent);
+        }
+        catch(Exception e){
+            Intent intent = new Intent(context, ActivityError.class);
+            intent.putExtra(Errors.ERROR_KEY,Errors.ERROR_IN_THREAD_PARSER);
+            context.startActivity(intent);
+        }
     }
 
     public void validate(){
         if(ThreadParseHTML.holder.getApiAccess() == 0){ //If Admin dose'nt allow access, Show Error Page
             Intent intent = new Intent(context, ActivityError.class);
+            intent.putExtra(Errors.ERROR_KEY,Errors.ACCESS_DENIED);
             context.startActivity(intent);
         }
         else {
@@ -81,36 +99,64 @@ public class ThreadParseHTML extends Thread{
 
             //if the application is started after 10 minutes
             else{
-                String json = new PreviousData(context).getData();
-
-                //If JSON object was found then convert it into java object
-                if(!json.isEmpty()){
-
-                    //Convert Json to Holder Object
-                    Gson gson = new Gson();
-
-                    MainActivity.holder = gson.fromJson(json, com.android.mnews.mediastack.Holder.class);
-                    MainActivity.data = MainActivity.holder.getData();
-
-                    //Move to Display activity
-                    Intent intent = new Intent(context, ActivityDisplay.class);
-                    intent.putExtra("test","loading existing data , time = "+duration);
-                    context.startActivity(intent);
-                }
-
-                //If json object it not found or any error occurs, show ActivityError
-                else{
-                    Intent intent = new Intent(context, ActivityError.class);
-                    context.startActivity(intent);
-                }
+                loadStoredJSON();
             }
         }
     }
 
+    //Methods for JSON which is stored in shared pref
+    public void removeDuplicates(){
+        //comparator only to filter out common data based on Title
+        Comparator<Data> comparatorOfData = (o1, o2) -> {
+            if(o1 != null && o2 != null){
+                if(o1.getTitle().equals(o2.getTitle())){
+                    return 0;
+                }
+            }
+            return 1;
+        };
+        Set<Data> set = new TreeSet<>(comparatorOfData);
+        set.addAll(MainActivity.data);
+        MainActivity.data = new ArrayList<>(set);
+    }
+
+    public void loadStoredJSON(){
+        String json = new PreviousData(context).getData();
+
+        //If JSON object was found then convert it into java object
+        if(!json.isEmpty()){
+
+            //Convert Json to Holder Object
+            Gson gson = new Gson();
+            MainActivity.holder = gson.fromJson(json, com.android.mnews.mediastack.Holder.class);
+            MainActivity.data = MainActivity.holder.getData();
+
+            removeDuplicates();
+
+            //Move to Display activity
+            Intent intent = new Intent(context, ActivityDisplay.class);
+            intent.putExtra("test","loading existing data");
+            context.startActivity(intent);
+        }
+
+        //If json object it not found or any error occurs, show ActivityError
+        else{
+            Intent intent = new Intent(context, ActivityError.class);
+            intent.putExtra(Errors.ERROR_KEY,Errors.ERROR_IN_THREAD_PARSER);
+            context.startActivity(intent);
+        }
+    }
+
+
     @Override
     public void run() {
+        //TODO : Remove
+        Log.d("MEHUL","Thread Parser Started");
 
         process();
         validate();
+
+        //TODO : Remove
+        Log.d("MEHUL","Thread Parser Destroyed");
     }
 }

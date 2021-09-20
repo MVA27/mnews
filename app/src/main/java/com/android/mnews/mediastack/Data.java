@@ -1,22 +1,29 @@
 package com.android.mnews.mediastack;
 
+import android.util.Log;
+
+import androidx.annotation.Nullable;
+
 public class Data {
+
     private String author;
     private String title;
     private String description;
     private String url;
     private String image;
+    private String source;
     private String category;
     private String language;
     private String country;
     private String published_at;
 
-    public Data(String author, String title, String description, String url, String image, String category, String language, String country, String published_at) {
+    public Data(String author, String title, String description, String url, String image,String source, String category, String language, String country, String published_at) {
         this.author = author;
         this.title = title;
         this.description = description;
         this.url = url;
         this.image = image;
+        this.source = source;
         this.category = category;
         this.language = language;
         this.country = country;
@@ -61,6 +68,14 @@ public class Data {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getCategory() {

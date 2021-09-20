@@ -2,20 +2,30 @@ package com.android.mnews.threads;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.android.mnews.ActivityDisplay;
+import com.android.mnews.ActivityError;
 import com.android.mnews.MainActivity;
+import com.android.mnews.constants.Errors;
+import com.android.mnews.mediastack.Data;
 import com.android.mnews.mediastack.Holder;
 import com.android.mnews.persistence.PreviousData;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ThreadDataLoader extends Thread {
 
@@ -35,6 +45,7 @@ public class ThreadDataLoader extends Thread {
         String json = "";
         try {
             String date = "date="+new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            //String date = "date=2021-09-01"; //TODO: Remove this
             String languages = "languages=en,-ar,-ru";
             String limit = "limit=100";
             String countries = "countries=-ar,-au,-at,-be,-br,-bg,-cn,-co,-cz,-eg,-fr,-de,-gr,-hk,-hu,-id,-ie,-il,-it,-jp,-lv,-lt,-my,-mx,-ma,-nl,-nz,-ng,-no,-ph,-pl,-pt,-ro,-sa,-rs,-sg,-sk,-si,-za,-kr,-se,-ch,-tw,-th,-tr,-ae,-ua,-ve";
@@ -53,31 +64,63 @@ public class ThreadDataLoader extends Thread {
             BufferedReader br = new BufferedReader(isr);
             json = br.readLine();
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch(IOException e){
+            Intent intent = new Intent(context, ActivityError.class);
+            intent.putExtra(Errors.ERROR_KEY,Errors.NO_INTERNET_CONNECTION);
+            context.startActivity(intent);
+        }
+        catch(Exception e){
+            Intent intent = new Intent(context, ActivityError.class);
+            intent.putExtra(Errors.ERROR_KEY,Errors.ERROR_IN_THREAD_DATA_LOADER);
+            context.startActivity(intent);
         }
 
         //Convert Json to Holder Object
         Gson gson = new Gson();
         MainActivity.holder = gson.fromJson(json, Holder.class);
 
+
         //Save the JSON data into permanent file
         PreviousData previousData = new PreviousData(context);
         previousData.saveData(json);
     }
 
+    public void removeDuplicates(){
+        //comparator only to filter out common data based on Title
+        Comparator<Data> comparatorOfData = (o1, o2) -> {
+            if(o1 != null && o2 != null){
+                if(o1.getTitle().equals(o2.getTitle())){
+                    return 0;
+                }
+            }
+            return 1;
+        };
+        Set<Data> set = new TreeSet<>(comparatorOfData);
+        set.addAll(MainActivity.data);
+        MainActivity.data = new ArrayList<>(set);
+    }
+
     public void gotoActivityDisplay(){
         Intent intent = new Intent(context, ActivityDisplay.class);
-        intent.putExtra("test"," loading new data");
+        intent.putExtra("test"," loading new data"); //TODO: Remove
         context.startActivity(intent);
     }
 
     @Override
-    public void run() {
+    public void run(){
+        //TODO : Remove
+        Log.d("MEHUL","Thread DataLoader Started");
+
         loadData();
 
         //Data loaded into list
         MainActivity.data = MainActivity.holder.getData();
+
+        removeDuplicates();
+
         gotoActivityDisplay();
+
+        //TODO : Remove
+        Log.d("MEHUL","Thread DataLoader Destroyed");
     }
 }
