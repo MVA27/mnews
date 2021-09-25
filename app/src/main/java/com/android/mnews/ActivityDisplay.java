@@ -1,13 +1,10 @@
 package com.android.mnews;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
-
 
 import com.android.mnews.adapters.AdapterDisplay;
 import com.android.mnews.constants.Errors;
@@ -21,16 +18,15 @@ public class ActivityDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
 
-        //TODO : Remove
-        Log.d("MEHUL","Activity Display stated");
-
-        Toast.makeText(this, ""+getIntent().getStringExtra("test"), Toast.LENGTH_SHORT).show(); //TODO: Remove
-
         try {
             activityDisplayLView = findViewById(R.id.activity_display_list_view_ID);
             AdapterDisplay adapterDisplay = new AdapterDisplay(this);
             adapterDisplay.notifyDataSetChanged();
             activityDisplayLView.setAdapter(adapterDisplay);
+
+            if(MainActivity.holder.getData().size() == 0){
+                Toast.makeText(this, "No recent news available", Toast.LENGTH_SHORT).show();
+            }
         }
         catch (Exception e){
             Intent intent = new Intent(this, ActivityError.class);
@@ -47,12 +43,5 @@ public class ActivityDisplay extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //TODO : Remove
-        Log.d("MEHUL","Thread Activity Display Destroyed");
     }
 }

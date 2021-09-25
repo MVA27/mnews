@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.mnews.administrator.ThreadParseHTML;
 import com.android.mnews.constants.Errors;
 
 public class ActivityError extends AppCompatActivity {
@@ -37,7 +38,13 @@ public class ActivityError extends AppCompatActivity {
                     break;
 
                 case Errors.ACCESS_DENIED:
-                    errorText = "ERROR "+Errors.ERROR_IN_THREAD_PARSER+" has occurred : \nThe administrator has decided to temporarily stop the service. Please come back after sometime";
+                    String message = ThreadParseHTML.holder.getMessage();
+                    if(message.isEmpty()){
+                        errorText = "ERROR "+Errors.ERROR_IN_THREAD_PARSER+" has occurred : \nThe administrator has decided to temporarily stop the service. Please come back after sometime\n";
+                    }
+                    else{
+                        errorText = message;
+                    }
                     break;
 
                 case Errors.ERROR_IN_THREAD_DATA_LOADER:

@@ -135,7 +135,6 @@ public class ThreadParseHTML extends Thread{
 
             //Move to Display activity
             Intent intent = new Intent(context, ActivityDisplay.class);
-            intent.putExtra("test","loading existing data");
             context.startActivity(intent);
         }
 
@@ -147,16 +146,9 @@ public class ThreadParseHTML extends Thread{
         }
     }
 
-
     @Override
     public void run() {
-        //TODO : Remove
-        Log.d("MEHUL","Thread Parser Started");
-
         process();
         validate();
-
-        //TODO : Remove
-        Log.d("MEHUL","Thread Parser Destroyed");
     }
 }

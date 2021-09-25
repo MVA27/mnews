@@ -63,12 +63,10 @@ public class ActivityWeb extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 progressBar.setVisibility(View.VISIBLE);
-                Log.d("MEHUL", "onPageStarted: "+view.getProgress()); //TODO: Remove
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                Log.d("MEHUL", "onPageFinished: "+view.getProgress()); //TODO: Remove
                 progressBar.setVisibility(View.GONE);
                 shareImageButton.setVisibility(View.VISIBLE);
             }

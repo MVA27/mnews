@@ -37,11 +37,4 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         finish();
     }
-
-    //TODO : Remove
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("MEHUL","Main Activity destroyed");
-    }
 }

@@ -6,6 +6,7 @@ public interface Errors {
 
     public static final String NO_INTERNET_CONNECTION = "001";
     public static final String ACCESS_DENIED= "002";
+    public static final String NO_DATA = "003";
 
     public static final String ERROR_IN_THREAD_PARSER = "100"; //indicates error in :- administrator.ThreadParseHTML
     public static final String ERROR_IN_THREAD_DATA_LOADER = "101"; //indicates error in :- threads.ThreadDataLoader

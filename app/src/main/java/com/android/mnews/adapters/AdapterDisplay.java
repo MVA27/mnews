@@ -102,11 +102,4 @@ public class AdapterDisplay extends BaseAdapter {
 
         return eachRow;
     }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        //TODO : Remove
-        Log.d("MEHUL","Adapter object to be destroyed");
-    }
 }

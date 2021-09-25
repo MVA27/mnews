@@ -21,6 +21,6 @@ public class PreviousData {
 
     public String getData(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREVIOUS_DATA,Context.MODE_PRIVATE);
-        return sharedPreferences.getString(PREVIOUS_DATA,""); //TODO : Put default values
+        return sharedPreferences.getString(PREVIOUS_DATA,"");
     }
 }

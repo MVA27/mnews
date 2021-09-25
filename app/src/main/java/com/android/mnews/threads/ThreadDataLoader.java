@@ -45,7 +45,6 @@ public class ThreadDataLoader extends Thread {
         String json = "";
         try {
             String date = "date="+new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            //String date = "date=2021-09-01"; //TODO: Remove this
             String languages = "languages=en,-ar,-ru";
             String limit = "limit=100";
             String countries = "countries=-ar,-au,-at,-be,-br,-bg,-cn,-co,-cz,-eg,-fr,-de,-gr,-hk,-hu,-id,-ie,-il,-it,-jp,-lv,-lt,-my,-mx,-ma,-nl,-nz,-ng,-no,-ph,-pl,-pt,-ro,-sa,-rs,-sg,-sk,-si,-za,-kr,-se,-ch,-tw,-th,-tr,-ae,-ua,-ve";
@@ -102,25 +101,17 @@ public class ThreadDataLoader extends Thread {
 
     public void gotoActivityDisplay(){
         Intent intent = new Intent(context, ActivityDisplay.class);
-        intent.putExtra("test"," loading new data"); //TODO: Remove
         context.startActivity(intent);
     }
 
     @Override
     public void run(){
-        //TODO : Remove
-        Log.d("MEHUL","Thread DataLoader Started");
-
         loadData();
 
         //Data loaded into list
         MainActivity.data = MainActivity.holder.getData();
 
         removeDuplicates();
-
         gotoActivityDisplay();
-
-        //TODO : Remove
-        Log.d("MEHUL","Thread DataLoader Destroyed");
     }
 }
